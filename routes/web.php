@@ -46,7 +46,7 @@ var_dump($estudiantes);
 Route::get('paises',function(){
     //arreglo de paises
     $paises = [
-        "Colombia" =>[
+        "Colombia " =>[
             "capital" => "Bogotá",
             "moneda" => "Peso",
             "población" =>  51,
