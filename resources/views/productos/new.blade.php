@@ -37,7 +37,7 @@
 
 <div class="row">
     <div class="col s8 input-field">
-        <select nom="" id="marca">
+        <select name="" id="marca">
             @foreach($marcas as $marca)
                 <option value="">
                     {{ $marca->nombre }}
