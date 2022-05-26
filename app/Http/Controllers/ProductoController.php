@@ -6,6 +6,7 @@ use App\Models\Marca;
 use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductoController extends Controller
 {
@@ -45,9 +46,57 @@ class ProductoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        //
+        //1.Establecer las reglas de validacion que aplicarian a cada campo
+        $reglas =[
+            "nombre"=> 'required|alpha',
+            "desc" => 'required|min:20|max:50',
+            "precio" => 'required|numeric',
+            "marca" => 'required',
+            "categoria" => 'required'
+        ];
+
+        //mensajes:
+        $mensajes =[
+            "required" => "Campo Obligatorio",
+            "alpha" => "Solo letras",
+            "min" => "Minimo 20 caracteres",
+            "max" => "Maximo 50 caracteres",
+            "numeric" => "Solo numeros"
+        ];
+
+        //2.crear el objeto validador 
+        $v = Validator::make($r->all() ,
+                             $reglas,
+                             $mensajes);
+
+        //3.Validar los datos
+        if($v->fails()){
+            //validacion fallida
+            //redireccionar al formulario
+            return redirect('productos/create')
+            ->withErrors($v)
+            ->withInput();
+        }else{
+            //validacion correcta
+             //crear nuevo producto
+            $p = new Producto;
+            //asignar valores a los atributos
+            $p->nombre = $r->nombre;
+            $p->desc = $r->desc;
+            $p->precio = $r->precio;
+            $p->categoria_id = $r->categoria;
+            $p->marca_id = $r->marca;
+            //guardar en base de datos
+            $p->save();
+            //redireccionar al formulario
+            //con mensaje exitoso
+            return redirect('productos/create')
+            ->with('Mensajito', "Registro exitoso");
+            }
+       
+        
     }
 
     /**
