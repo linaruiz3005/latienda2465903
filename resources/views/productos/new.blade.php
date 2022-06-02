@@ -94,7 +94,7 @@
                 </div>
                 <span class="red-text text-darken-2">{{ $errors->first('imagen') }}</span>
             </div>
-            
+                                     
         </div>
         <div class="row">
             <button class="btn waves-efects waves-light" type="submit">
